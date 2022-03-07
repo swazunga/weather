@@ -4,6 +4,11 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  color: blue;
+  font-size: 36px;
+}
+
 form {
   width: 250px;
 }
