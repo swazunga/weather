@@ -1,0 +1,26 @@
+h1 {
+  background-color: blue;
+  color: white;
+  text-align: center;
+}
+
+form {
+  width: 250px;
+}
+
+.form-input {
+  width: 250px;
+}
+
+.search-btn {
+  background-color: blue;
+  color: white;
+  width: 250px;
+  margin: 15px 0 0 0;
+}
+
+.previous-city {
+  width: 250px;
+  border-top: 5px solid;
+  margin: 15px 0 0 0;
+}
