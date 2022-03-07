@@ -24,3 +24,9 @@ form {
   border-top: 5px solid;
   margin: 15px 0 0 0;
 }
+
+.uvi {
+  background-color: green;
+  color: white;
+  width: 150px;
+}

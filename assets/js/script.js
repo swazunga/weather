@@ -14,32 +14,51 @@ function formSubmitHandler(event) {
 
 function getCityWeather(city) {
   var apiUrl =
-    "https://api.openweathermap.org/data/2.5/onecall?lat=36.1659&lon=-86.7844&exclude=hourly,daily&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
+    "https://api.openweathermap.org/data/2.5/onecall?lat=36.1659&lon=-86.7844&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
 
-  var latitude = city.lat;
-  var longitude = city.lon;
-  // "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-  // lat +
-  // "&lon=" +
-  // lon +
-  // "&exclude=" +
-  // part +
-  // "&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
+  //   var latitude = data.lat;
+  //   var longitude = data.lon;
+  //   var apiUrl =
+  //     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+  //     latitude +
+  //     "&lon=" +
+  //     longitude +
+  //     "&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
 
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
-      response.json().then(function (data) {});
-      displayCity();
+      response.json().then(function (data) {
+        console.log(data);
+        displayCity(data);
+      });
     } else {
       alert("Error: Please enter a valid city");
     }
   });
 }
 
-function displayCity(city, weatherInfo) {
-  currentCityEl.textContent = cityInputEl.value;
-  var weatherInfoEl = document.createElement("div");
-  cityInputEl.appendChild(weatherInfoEl);
-  weatherInfoEl.textContent = weatherInfo;
+function displayCity(data) {
+  var weatherInfoEl = document.createElement("p");
+  currentCityEl.textContent = cityInputEl.value + "(" + Date() + ")";
+  currentCityEl.appendChild(weatherInfoEl);
+  var currentTemp = document.createElement("p");
+  currentTemp.textContent =
+    "Temp: " +
+    (Math.round((data.current.temp - 273.15) * (9 / 5) + 32) * 100) / 100 +
+    "°F";
+  currentCityEl.appendChild(currentTemp);
+  var windEl = document.createElement("p");
+  windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
+  currentTemp.appendChild(windEl);
+  var humidityEl = document.createElement("p");
+  humidityEl.textContent = "Humidity: " + data.current.humidity + " %";
+  windEl.appendChild(humidityEl);
+  var uviEl = document.createElement("p");
+  uviEl.classList = "uvi";
+  uviEl.textContent = "UV Index: " + data.current.uvi;
+  humidityEl.appendChild(uviEl);
+  cityInputEl.textContent = "";
+
+  console.log(data);
 }
 document.addEventListener("submit", formSubmitHandler);
