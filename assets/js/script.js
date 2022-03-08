@@ -5,7 +5,7 @@ var previousCityEl = document.querySelector(".previous-city");
 var fiveDayEl = document.querySelector(".five-day");
 var fiveHeaderEl = document.querySelector(".five-header");
 
-var cities = [];
+var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
 displayButtons();
 
@@ -16,8 +16,8 @@ function displayButtons() {
     var previousCityItemEl = document.createElement("li");
     var previousCityItemEl = document.createElement("button");
     previousCityItemEl.classList = "list-previous btn-city";
-    previousCityItemEl.textContent = cities[[i]];
-    previousCityEl.prepend(cities[i]);
+    previousCityEl.appendChild(previousCityItemEl);
+    previousCityItemEl.prepend(cities[i]);
   }
 }
 
@@ -26,16 +26,20 @@ function formSubmitHandler(event) {
   var city = cityInputEl.value.trim();
   getLatLon(city).then(function (coord) {
     getCityWeather(coord.lat, coord.lon);
-    localStorage.setItem("cities", cityInputEl.value);
-    cities = cities.push(cityInputEl.value);
+    if (cities.includes(cityInputEl.value) === false)
+      cities.push(cityInputEl.value);
+    localStorage.setItem("cities", JSON.stringify(cities));
   });
-  if (city) {
+  if (cities.includes(city) === false) {
     var previousCityItemEl = document.createElement("li");
     var previousCityItemEl = document.createElement("button");
     previousCityItemEl.classList = "list-previous btn-city";
     previousCityItemEl.textContent = cityInputEl.value;
+
     previousCityEl.prepend(previousCityItemEl);
-  } else {
+  }
+  if (cities.includes(city) === true) {
+  } else if (!city) {
     alert("Error: Please enter a valid city");
   }
   //   formSubmitHandler.catch(alert("Please enter a valid city name"));
@@ -71,7 +75,13 @@ function retrievePast(event) {
           humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
           windEl.appendChild(humidityEl);
           var uviEl = document.createElement("p");
-          uviEl.classList = "uvi";
+          if (data.current.uvi < 2.01) {
+            uviEl.classList = "uvi-favor";
+          } else if (data.current.uvi > 2 && data.current.uvi < 5.01) {
+            uviEl.classList = "uvi-mod";
+          } else {
+            uviEl.classList = "uvi-severe";
+          }
           uviEl.textContent = "UV Index: " + data.current.uvi;
           humidityEl.appendChild(uviEl);
           fiveDay(data);
@@ -135,7 +145,14 @@ function displayCity(data) {
   humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
   windEl.appendChild(humidityEl);
   var uviEl = document.createElement("p");
-  uviEl.classList = "uvi";
+  console.log(data.current.uvi);
+  if (data.current.uvi < 2.01) {
+    uviEl.classList = "uvi-favor";
+  } else if (data.current.uvi > 2 && data.current.uvi < 5.01) {
+    uviEl.classList = "uvi-mod";
+  } else {
+    uviEl.classList = "uvi-severe";
+  }
   uviEl.textContent = "UV Index: " + data.current.uvi;
   humidityEl.appendChild(uviEl);
   cityInputEl.value = "";
@@ -163,14 +180,20 @@ function fiveDay(data) {
       "°F";
     eachDayEl.appendChild(currentTemp);
     var windEl = document.createElement("p");
-    windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
+    windEl.textContent = "Wind: " + data.daily[i].wind_speed + " MPH";
     currentTemp.appendChild(windEl);
     var humidityEl = document.createElement("p");
-    humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
+    humidityEl.textContent = "Humidity: " + data.daily[i].humidity + "%";
     windEl.appendChild(humidityEl);
     var uviEl = document.createElement("p");
-    uviEl.classList = "uvi";
-    uviEl.textContent = "UV Index: " + data.current.uvi;
+    if (data.daily[i].uvi < 2.01) {
+      uviEl.classList = "uvi-favor";
+    } else if (data.daily[i].uvi > 2 && data.daily[i].uvi < 5.01) {
+      uviEl.classList = "uvi-mod";
+    } else {
+      uviEl.classList = "uvi-severe";
+    }
+    uviEl.textContent = "UV Index: " + data.daily[i].uvi;
     humidityEl.appendChild(uviEl);
   }
 }

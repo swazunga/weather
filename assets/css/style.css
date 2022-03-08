@@ -44,8 +44,20 @@ form {
   margin: 0 50px 0 5px;
 }
 
-.uvi {
+.uvi-favor {
   background-color: green;
+  color: white;
+  width: 150px;
+}
+
+.uvi-mod {
+  background-color: yellow;
+  color: black;
+  width: 150px;
+}
+
+.uvi-severe {
+  background-color: red;
   color: white;
   width: 150px;
 }
