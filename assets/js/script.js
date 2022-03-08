@@ -11,6 +11,7 @@ displayButtons();
 
 function displayButtons() {
   localStorage.getItem(cities);
+  cities.reverse();
   for (var i = 0; i < cities.length; i++) {
     var previousCityItemEl = document.createElement("li");
     var previousCityItemEl = document.createElement("button");
