@@ -11,7 +11,6 @@ displayButtons();
 
 function displayButtons() {
   localStorage.getItem(cities);
-  console.log(cities);
   for (var i = 0; i < cities.length; i++) {
     var previousCityItemEl = document.createElement("li");
     var previousCityItemEl = document.createElement("button");
@@ -30,7 +29,6 @@ function formSubmitHandler(event) {
   getLatLon(city).then(function (coord) {
     getCityWeather(coord.lat, coord.lon);
   });
-  console.log(city);
 
   if (cities.includes(city) === true) {
   }
@@ -44,10 +42,6 @@ function formSubmitHandler(event) {
 
     previousCityEl.prepend(previousCityItemEl);
   }
-  //   else if (!city) {
-  //     alert("Error: Please enter a valid city");
-  //   }
-  //   getLatLon.catch(alert("Please enter a valid city name"));
 }
 
 function retrievePast(event) {
@@ -60,7 +54,6 @@ function retrievePast(event) {
       "&lon=" +
       coord.lon +
       "&appid=3f66c366ccf0a1df05a58c774ca05fc5";
-    console.log(apiUrl);
     fetch(apiUrl).then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
@@ -73,7 +66,6 @@ function retrievePast(event) {
               100 +
             "°F";
           var currentImageEl = document.createElement("p");
-          console.log(data);
           currentImageEl.innerHTML =
             "<img src=http://openweathermap.org/img/wn/" +
             data.daily[0].weather[0].icon +
@@ -121,14 +113,11 @@ function getLatLon(city) {
       }
     })
     .catch(function (err) {
-      console.log(err);
-      //   return alert("Catch Alert!");
+      return alert("Bad request");
     });
 }
 
 function getCityWeather(lat, lon) {
-  //   var latLon = getLatLon(city);
-  //   console.log(latLon);
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     lat +
@@ -155,7 +144,6 @@ function displayCity(data) {
     (Math.round((data.current.temp - 273.15) * (9 / 5) + 32) * 100) / 100 +
     "°F";
   var currentImageEl = document.createElement("p");
-  console.log(data);
   currentImageEl.innerHTML =
     "<img src=http://openweathermap.org/img/wn/" +
     data.daily[0].weather[0].icon +
