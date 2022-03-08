@@ -28,7 +28,10 @@ function formSubmitHandler(event) {
     getCityWeather(coord.lat, coord.lon);
   });
   console.log(city);
-  if (cities.includes(city) === true || city === "") {
+  if (!city || city === "") {
+    alert("Error: Please enter a valid city");
+  }
+  if (cities.includes(city) === true) {
   }
   if (cities.includes(city) === false) {
     cities.push(cityInputEl.value);
@@ -39,10 +42,11 @@ function formSubmitHandler(event) {
     previousCityItemEl.textContent = cityInputEl.value;
 
     previousCityEl.prepend(previousCityItemEl);
-  } else if (!city) {
-    alert("Error: Please enter a valid city");
   }
-  getLatLon.catch(alert("Please enter a valid city name"));
+  //   else if (!city) {
+  //     alert("Error: Please enter a valid city");
+  //   }
+  //   getLatLon.catch(alert("Please enter a valid city name"));
 }
 
 function retrievePast(event) {
@@ -100,13 +104,17 @@ function getLatLon(city) {
     "http://api.openweathermap.org/data/2.5/weather?q=" +
       city +
       "&appid=3f66c366ccf0a1df05a58c774ca05fc5"
-  ).then(function (response) {
-    if (response.ok) {
-      return response.json().then(function (data) {
-        return data.coord;
-      });
-    }
-  });
+  )
+    .then(function (response) {
+      if (response.ok) {
+        return response.json().then(function (data) {
+          return data.coord;
+        });
+      }
+    })
+    .catch(function (err) {
+      alert("Catch Alert!");
+    });
 }
 
 function getCityWeather(lat, lon) {
