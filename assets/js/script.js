@@ -5,11 +5,29 @@ var previousCityEl = document.querySelector(".previous-city");
 var fiveDayEl = document.querySelector(".five-day");
 var fiveHeaderEl = document.querySelector(".five-header");
 
+var cities = [];
+
+displayButtons();
+
+function displayButtons() {
+  localStorage.getItem(cities);
+  console.log(cities);
+  for (var i = 0; i < cities.length; i++) {
+    var previousCityItemEl = document.createElement("li");
+    var previousCityItemEl = document.createElement("button");
+    previousCityItemEl.classList = "list-previous btn-city";
+    previousCityItemEl.textContent = cities[[i]];
+    previousCityEl.prepend(cities[i]);
+  }
+}
+
 function formSubmitHandler(event) {
   event.preventDefault();
   var city = cityInputEl.value.trim();
   getLatLon(city).then(function (coord) {
     getCityWeather(coord.lat, coord.lon);
+    localStorage.setItem("cities", cityInputEl.value);
+    cities = cities.push(cityInputEl.value);
   });
   if (city) {
     var previousCityItemEl = document.createElement("li");
@@ -32,7 +50,7 @@ function retrievePast(event) {
       coord.lat +
       "&lon=" +
       coord.lon +
-      "&appid=8d11ee23127ece86a8e45e07590427e7";
+      "&appid=3f66c366ccf0a1df05a58c774ca05fc5";
     console.log(apiUrl);
     fetch(apiUrl).then(function (response) {
       if (response.ok) {
@@ -50,12 +68,13 @@ function retrievePast(event) {
           windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
           currentTemp.appendChild(windEl);
           var humidityEl = document.createElement("p");
-          humidityEl.textContent = "Humidity: " + data.current.humidity + " %";
+          humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
           windEl.appendChild(humidityEl);
           var uviEl = document.createElement("p");
           uviEl.classList = "uvi";
           uviEl.textContent = "UV Index: " + data.current.uvi;
           humidityEl.appendChild(uviEl);
+          fiveDay(data);
         });
       } else {
         alert("Error: Please enter a valid city");
@@ -70,11 +89,10 @@ function getLatLon(city) {
   return fetch(
     "http://api.openweathermap.org/data/2.5/weather?q=" +
       city +
-      "&appid=8d11ee23127ece86a8e45e07590427e7"
+      "&appid=3f66c366ccf0a1df05a58c774ca05fc5"
   ).then(function (response) {
     if (response.ok) {
       return response.json().then(function (data) {
-        console.log(data);
         return data.coord;
       });
     }
@@ -89,8 +107,7 @@ function getCityWeather(lat, lon) {
     lat +
     "&lon=" +
     lon +
-    "&appid=8d11ee23127ece86a8e45e07590427e7";
-  console.log(apiUrl);
+    "&appid=3f66c366ccf0a1df05a58c774ca05fc5";
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
@@ -115,7 +132,7 @@ function displayCity(data) {
   windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
   currentTemp.appendChild(windEl);
   var humidityEl = document.createElement("p");
-  humidityEl.textContent = "Humidity: " + data.current.humidity + " %";
+  humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
   windEl.appendChild(humidityEl);
   var uviEl = document.createElement("p");
   uviEl.classList = "uvi";
@@ -126,20 +143,19 @@ function displayCity(data) {
 }
 
 function fiveDay(data) {
+  fiveDayEl.innerHTML = "";
   for (var i = 0; i < 5; i++) {
     var daily = data.daily[i];
-    console.log(daily);
     fiveHeaderEl.classList = "h2";
     var eachDayEl = document.createElement("p");
     var iconEl = document.createElement("p");
     iconEl.classList = "";
     iconEl.textContent = daily.weather[0].icon;
-    console.log(daily.weather[0].icon);
     fiveDayEl.appendChild(iconEl);
     iconEl.appendChild(eachDayEl);
-    var date = data.current.dt;
-    console.log(data.current.dt);
-    eachDayEl.textContent = moment(date).format("MMMM Do, YYYY");
+    eachDayEl.textContent = moment()
+      .add(i + 1, "days")
+      .format("MMMM Do, YYYY");
     var currentTemp = document.createElement("p");
     currentTemp.textContent =
       "Temp: " +
@@ -150,7 +166,7 @@ function fiveDay(data) {
     windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
     currentTemp.appendChild(windEl);
     var humidityEl = document.createElement("p");
-    humidityEl.textContent = "Humidity: " + data.current.humidity + " %";
+    humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
     windEl.appendChild(humidityEl);
     var uviEl = document.createElement("p");
     uviEl.classList = "uvi";
