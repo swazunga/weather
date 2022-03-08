@@ -68,7 +68,7 @@ function retrievePast(event) {
             "°F";
           var currentImageEl = document.createElement("p");
           currentImageEl.innerHTML =
-            "<img src=http://openweathermap.org/img/wn/" +
+            "<img src=https://openweathermap.org/img/wn/" +
             data.daily[0].weather[0].icon +
             "@2x.png>";
           currentCityEl.appendChild(currentImageEl);
@@ -102,7 +102,7 @@ previousCityEl.addEventListener("click", retrievePast);
 
 function getLatLon(city) {
   return fetch(
-    "http://api.openweathermap.org/data/2.5/weather?q=" +
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
       city +
       "&appid=3f66c366ccf0a1df05a58c774ca05fc5"
   )
@@ -146,7 +146,7 @@ function displayCity(data) {
     "°F";
   var currentImageEl = document.createElement("p");
   currentImageEl.innerHTML =
-    "<img src=http://openweathermap.org/img/wn/" +
+    "<img src=https://openweathermap.org/img/wn/" +
     data.daily[0].weather[0].icon +
     "@2x.png>";
   currentCityEl.appendChild(currentImageEl);
@@ -179,7 +179,7 @@ function fiveDay(data) {
     var eachDayEl = document.createElement("p");
     var iconEl = document.createElement("p");
     iconEl.innerHTML =
-      "<img src=http://openweathermap.org/img/wn/" +
+      "<img src=https://openweathermap.org/img/wn/" +
       daily.weather[0].icon +
       "@2x.png>";
     fiveDayEl.appendChild(iconEl);
