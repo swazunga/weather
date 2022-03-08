@@ -72,7 +72,14 @@ function retrievePast(event) {
             (Math.round((data.current.temp - 273.15) * (9 / 5) + 32) * 100) /
               100 +
             "°F";
-          currentCityEl.appendChild(currentTemp);
+          var currentImageEl = document.createElement("p");
+          console.log(data);
+          currentImageEl.innerHTML =
+            "<img src=http://openweathermap.org/img/wn/" +
+            data.daily[0].weather[0].icon +
+            "@2x.png>";
+          currentCityEl.appendChild(currentImageEl);
+          currentImageEl.appendChild(currentTemp);
           var windEl = document.createElement("p");
           windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
           currentTemp.appendChild(windEl);
@@ -147,7 +154,14 @@ function displayCity(data) {
     "Temp: " +
     (Math.round((data.current.temp - 273.15) * (9 / 5) + 32) * 100) / 100 +
     "°F";
-  currentCityEl.appendChild(currentTemp);
+  var currentImageEl = document.createElement("p");
+  console.log(data);
+  currentImageEl.innerHTML =
+    "<img src=http://openweathermap.org/img/wn/" +
+    data.daily[0].weather[0].icon +
+    "@2x.png>";
+  currentCityEl.appendChild(currentImageEl);
+  currentImageEl.appendChild(currentTemp);
   var windEl = document.createElement("p");
   windEl.textContent = "Wind: " + data.current.wind_speed + " MPH";
   currentTemp.appendChild(windEl);
@@ -175,8 +189,10 @@ function fiveDay(data) {
     fiveHeaderEl.classList = "h2";
     var eachDayEl = document.createElement("p");
     var iconEl = document.createElement("p");
-    iconEl.classList = "";
-    iconEl.textContent = daily.weather[0].icon;
+    iconEl.innerHTML =
+      "<img src=http://openweathermap.org/img/wn/" +
+      daily.weather[0].icon +
+      "@2x.png>";
     fiveDayEl.appendChild(iconEl);
     iconEl.appendChild(eachDayEl);
     eachDayEl.textContent = moment()
