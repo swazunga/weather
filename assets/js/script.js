@@ -22,7 +22,10 @@ function formSubmitHandler(event) {
 
 function retrievePast(event) {
   var prevCityStr = event.target.innerHTML;
-  getLanLon(prevCityStr);
+  currentCityEl.textContent = prevCityStr;
+  getLatLon(prevCityStr).then(function (coord) {
+    getCityWeather(coord.lat, coord.lon);
+  });
 }
 
 previousCityEl.addEventListener("click", retrievePast);
