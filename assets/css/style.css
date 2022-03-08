@@ -22,6 +22,14 @@ form {
   color: white;
   width: 250px;
   margin: 15px 0 0 0;
+  border: none;
+}
+
+.btn-city {
+  background-color: lightgray;
+  width: 250px;
+  margin: 15px 0 0 0;
+  border: none;
 }
 
 .previous-city {
@@ -34,4 +42,8 @@ form {
   background-color: green;
   color: white;
   width: 150px;
+}
+
+.list-previous {
+  list-style-type: none;
 }
