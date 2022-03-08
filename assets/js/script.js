@@ -3,6 +3,7 @@ var cityInputEl = document.querySelector("#city");
 var currentCityEl = document.querySelector(".current-city");
 var previousCityEl = document.querySelector(".previous-city");
 var fiveDayEl = document.querySelector(".five-day");
+var fiveHeaderEl = document.querySelector(".five-header");
 
 function formSubmitHandler(event) {
   event.preventDefault();
@@ -128,7 +129,7 @@ function fiveDay(data) {
   for (var i = 0; i < 5; i++) {
     var daily = data.daily[i];
     console.log(daily);
-
+    fiveHeaderEl.classList = "h2";
     var eachDayEl = document.createElement("p");
     var iconEl = document.createElement("p");
     iconEl.classList = "";
@@ -136,7 +137,9 @@ function fiveDay(data) {
     console.log(daily.weather[0].icon);
     fiveDayEl.appendChild(iconEl);
     iconEl.appendChild(eachDayEl);
-    eachDayEl.textContent = new Date().toDateString();
+    var date = data.current.dt;
+    console.log(data.current.dt);
+    eachDayEl.textContent = moment(date).format("MMMM Do, YYYY");
     var currentTemp = document.createElement("p");
     currentTemp.textContent =
       "Temp: " +

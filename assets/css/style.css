@@ -52,3 +52,7 @@ form {
 .list-previous {
   list-style-type: none;
 }
+
+.five-header {
+  display: none;
+}
