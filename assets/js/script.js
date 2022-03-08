@@ -26,23 +26,23 @@ function formSubmitHandler(event) {
   var city = cityInputEl.value.trim();
   getLatLon(city).then(function (coord) {
     getCityWeather(coord.lat, coord.lon);
-    if (cities.includes(cityInputEl.value) === false)
-      cities.push(cityInputEl.value);
-    localStorage.setItem("cities", JSON.stringify(cities));
   });
+  console.log(city);
+  if (cities.includes(city) === true || city === "") {
+  }
   if (cities.includes(city) === false) {
+    cities.push(cityInputEl.value);
+    localStorage.setItem("cities", JSON.stringify(cities));
     var previousCityItemEl = document.createElement("li");
     var previousCityItemEl = document.createElement("button");
     previousCityItemEl.classList = "list-previous btn-city";
     previousCityItemEl.textContent = cityInputEl.value;
 
     previousCityEl.prepend(previousCityItemEl);
-  }
-  if (cities.includes(city) === true) {
   } else if (!city) {
     alert("Error: Please enter a valid city");
   }
-  //   formSubmitHandler.catch(alert("Please enter a valid city name"));
+  getLatLon.catch(alert("Please enter a valid city name"));
 }
 
 function retrievePast(event) {
@@ -145,7 +145,6 @@ function displayCity(data) {
   humidityEl.textContent = "Humidity: " + data.current.humidity + "%";
   windEl.appendChild(humidityEl);
   var uviEl = document.createElement("p");
-  console.log(data.current.uvi);
   if (data.current.uvi < 2.01) {
     uviEl.classList = "uvi-favor";
   } else if (data.current.uvi > 2 && data.current.uvi < 5.01) {
