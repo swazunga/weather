@@ -6,57 +6,52 @@ var previousCityEl = document.querySelector(".previous-city");
 function formSubmitHandler(event) {
   event.preventDefault();
   var city = cityInputEl.value.trim();
+  getLatLon(city);
   if (city) {
-    getCityWeather(city);
     // for (var i = 0; i < city.length; i++) {
     // //   localStorage.setItem("event", city);
     // //   var addToList = localStorage.getItem("event");
     // //   previousCityEl.appendChild(addToList);
     // }
   } else {
-    alert("Error: Please enter a valid city");
+    alert("Error: Please enter a valid city!");
   }
 }
 
-function getLatLon() {
-  var getLat =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
-    cityInputEl.value +
-    "&limit=1&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
-  fetch(getLat).then(function (response) {
+function getLatLon(city) {
+  fetch(
+    "http://api.openweathermap.org/data/2.5/weather?q=" +
+      city +
+      "&appid=8d11ee23127ece86a8e45e07590427e7"
+  ).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        var latitude = data[0].lat;
-      });
-    }
-  });
-
-  var getLon =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
-    cityInputEl.value +
-    "&limit=1&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
-  fetch(getLon).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        var longitude = data[0].lon;
+        console.log(data);
+        var lat = data.coord.lat;
+        var lon = data.coord.lon;
+        getCityWeather(lat, lon);
+        console.log(lat, lon);
+        return lat;
       });
     }
   });
 }
+// console.log(lat);
+// console.log(lon);
 
-function getCityWeather(city) {
-  getLatLon();
+function getCityWeather(lat, lon) {
+  var latLon = getLatLon();
+  console.log(latLon);
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-    latitude +
+    lat +
     "&lon=" +
-    longitude +
-    "&appid=c87ce505ce52817e75d4e9f4b1e2a56a";
-
+    lon +
+    "&appid=8d11ee23127ece86a8e45e07590427e7";
+  console.log(apiUrl);
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        getLatLon();
         displayCity(data);
       });
     } else {
@@ -66,7 +61,7 @@ function getCityWeather(city) {
 }
 
 function displayCity(data) {
-  currentCityEl.textContent = cityInputEl.value + "(" + Date() + ")";
+  currentCityEl.textContent = cityInputEl.value.trim() + "(" + Date() + ")";
   var currentTemp = document.createElement("p");
   currentTemp.textContent =
     "Temp: " +
@@ -84,7 +79,7 @@ function displayCity(data) {
   uviEl.textContent = "UV Index: " + data.current.uvi;
   humidityEl.appendChild(uviEl);
   cityInputEl.textContent = "";
-
+  getCityWeather(city);
   console.log(data);
 }
 document.addEventListener("submit", formSubmitHandler);
