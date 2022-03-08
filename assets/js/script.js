@@ -24,13 +24,14 @@ function displayButtons() {
 function formSubmitHandler(event) {
   event.preventDefault();
   var city = cityInputEl.value.trim();
+  if (!city || city === "") {
+    return alert("Error: Please enter a valid city");
+  }
   getLatLon(city).then(function (coord) {
     getCityWeather(coord.lat, coord.lon);
   });
   console.log(city);
-  if (!city || city === "") {
-    alert("Error: Please enter a valid city");
-  }
+
   if (cities.includes(city) === true) {
   }
   if (cities.includes(city) === false) {
@@ -91,7 +92,7 @@ function retrievePast(event) {
           fiveDay(data);
         });
       } else {
-        alert("Error: Please enter a valid city");
+        alert("Error: Please enter a valid city!");
       }
     });
   });
@@ -113,7 +114,8 @@ function getLatLon(city) {
       }
     })
     .catch(function (err) {
-      alert("Catch Alert!");
+      console.log(err);
+      //   return alert("Catch Alert!");
     });
 }
 
