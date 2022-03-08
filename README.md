@@ -10,4 +10,4 @@ The weather app allows you to search for cities and the app will return today's 
 
 ## URL
 
-
+https://swazunga.github.io/weather/
